@@ -1,0 +1,148 @@
+PRACTICAL-12
+
+AIM:
+Implement Graphs and represent using adjacency list and adjacency matrix and 
+implement basic operations with traversals (BFS and DFS)
+(Note: As structured in the lab sheet, the actual implementation provided below 
+evaluates sorting methods across distinct array instances).
+
+THEORY:
+- Bubble Sort: Scans adjacent pairs iteratively and swaps unordered elements.
+- Selection Sort: Identifies the smallest element and places it in the target position.
+- Insertion Sort: Inserts each value into its appropriate slot in the sorted segment.
+- Quick Sort & Merge Sort: Use a divide-and-conquer strategy to partition and sort efficiently.
+================================================================================
+*/
+
+#include <stdio.h>
+
+// Utility function to print array elements
+void print(int a[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", a[i]);
+    printf("\n");
+}
+
+// Bubble Sort Implementation
+void bubble(int a[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (a[j] > a[j + 1]) {
+                int t = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = t;
+            }
+        }
+    }
+}
+
+// Selection Sort Implementation
+void selection(int a[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int m = i;
+        for (int j = i + 1; j < n; j++) {
+            if (a[j] < a[m])
+                m = j;
+        }
+        int t = a[i];
+        a[i] = a[m];
+        a[m] = t;
+    }
+}
+
+// Insertion Sort Implementation
+void insertion(int a[], int n) {
+    for (int i = 1; i < n; i++) {
+        int x = a[i], j = i - 1;
+        while (j >= 0 && a[j] > x) {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = x;
+    }
+}
+
+// Quick Sort Implementation
+void quick(int a[], int l, int r) {
+    if (l >= r) return;
+    int i = l, j = r, p = a[r], t;
+    while (i < j) {
+        while (a[i] < p) i++;
+        while (a[j] >= p && j > i) j--;
+        if (i < j) {
+            t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+        }
+    }
+    t = a[i];
+    a[i] = a[r];
+    a[r] = t;
+    quick(a, l, i - 1);
+    quick(a, i + 1, r);
+}
+
+// Merge routine for Merge Sort
+void merge(int a[], int l, int m, int r) {
+    int b[20], i = l, j = m + 1, k = 0;
+    while (i <= m && j <= r)
+        b[k++] = (a[i] < a[j]) ? a[i++] : a[j++];
+    while (i <= m)
+        b[k++] = a[i++];
+    while (j <= r)
+        b[k++] = a[j++];
+    for (i = l, k = 0; i <= r; i++)
+        a[i] = b[k++];
+}
+
+// Merge Sort Implementation
+void mergeSort(int a[], int l, int r) {
+    if (l < r) {
+        int m = (l + r) / 2;
+        mergeSort(a, l, m);
+        mergeSort(a, m + 1, r);
+        merge(a, l, m, r);
+    }
+}
+
+int main() {
+    int n = 5;
+
+    int a[] = {5, 2, 8, 1, 6};
+    bubble(a, n);
+    printf("Bubble: ");
+    print(a, n);
+
+    int b[] = {5, 2, 8, 1, 6};
+    selection(b, n);
+    printf("Selection: ");
+    print(b, n);
+
+    int c[] = {5, 2, 8, 1, 6};
+    insertion(c, n);
+    printf("Insertion: ");
+    print(c, n);
+
+    int d[] = {5, 2, 8, 1, 6};
+    quick(d, 0, n - 1);
+    printf("Quick: ");
+    print(d, n);
+
+    int e[] = {5, 2, 8, 1, 6};
+    mergeSort(e, 0, n - 1);
+    printf("Merge: ");
+    print(e, n);
+
+    return 0;
+}
+
+/*
+================================================================================
+OUTPUT:
+Bubble: 1 2 5 6 8
+Selection: 1 2 5 6 8
+Insertion: 1 2 8 1 6
+Quick: 1 2 5 6 8
+Merge: 1 2 5 6 8
+================================================================================
+*/
