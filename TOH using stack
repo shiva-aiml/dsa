@@ -1,0 +1,241 @@
+/*
+====================================================================
+AIM : Implement Towers of Hanoi using stack.
+
+Theory : The Tower of Hanoi is a mathematical puzzle consisting of three 
+rods and n disks of different sizes. The objective is to move all the disks 
+from the source rod to the destination rod using an auxiliary rod, 
+following these rules:
+1. Only one disk can be moved at a time.
+2. Only the top disk of a rod can be moved.
+3. A larger disk cannot be placed on a smaller disk.
+
+A stack is used to represent each rod because it follows the 
+Last-In-First-Out (LIFO) principle.
+====================================================================
+*/
+
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+void display(stack<int> S, stack<int> A, stack<int> D)
+{
+    cout << "\nCurrent State";
+    cout << "\n-------------------\n";
+    cout << "Source      : ";
+    while (!S.empty())
+    {
+        cout << S.top() << " ";
+        S.pop();
+    }
+
+    cout << "\nAuxiliary   : ";
+    while (!A.empty())
+    {
+        cout << A.top() << " ";
+        A.pop();
+    }
+
+    cout << "\nDestination : ";
+    while (!D.empty())
+    {
+        cout << D.top() << " ";
+        D.pop();
+    }
+
+    cout << "\n-------------------\n";
+}
+
+stack<int>* getRod(char rod, stack<int>& S, stack<int>& A, stack<int>& D)
+{
+    switch (rod)
+    {
+    case 'S':
+    case 's':
+        return &S;
+    case 'A':
+    case 'a':
+        return &A;
+    case 'D':
+    case 'd':
+        return &D;
+    default:
+        return nullptr;
+    }
+}
+
+bool moveDisk(stack<int>& from, stack<int>& to)
+{
+    if (from.empty())
+    {
+        cout << "Source rod is empty.\n";
+        return false;
+    }
+
+    if (!to.empty() && from.top() > to.top())
+    {
+        cout << "Cannot place larger disk on smaller disk.\n";
+        return false;
+    }
+
+    int disk = from.top();
+    from.pop();
+    to.push(disk);
+
+    cout << "Disk " << disk << " moved successfully.\n";
+    return true;
+}
+
+int main()
+{
+    stack<int> S, A, D;
+    int n;
+
+    cout << "Enter number of disks: ";
+    cin >> n;
+
+    for (int i = n; i >= 1; i--)
+    {
+        S.push(i);
+    }
+
+    int moves = 0;
+
+    while (true)
+    {
+        display(S, A, D);
+
+        if (D.size() == n)
+        {
+            cout << "\nCongratulations! Puzzle Solved.\n";
+            cout << "Total Moves = " << moves << endl;
+            break;
+        }
+
+        char fromRod, toRod;
+        cout << "\nMove From (S/A/D): ";
+        cin >> fromRod;
+
+        cout << "Move To (S/A/D): ";
+        cin >> toRod;
+
+        if (fromRod == toRod)
+        {
+            cout << "Source and destination rods cannot be same.\n";
+            continue;
+        }
+
+        stack<int>* from = getRod(fromRod, S, A, D);
+        stack<int>* to = getRod(toRod, S, A, D);
+
+        if (from == nullptr || to == nullptr)
+        {
+            cout << "Invalid rod selection.\n";
+            continue;
+        }
+
+        if (moveDisk(*from, *to))
+        {
+            moves++;
+        }
+    }
+
+    return 0;
+}
+
+/*
+====================================================================
+Output :
+
+Enter number of disks: 3
+
+Current State
+-------------------
+Source      : 1 2 3 
+Auxiliary   : 
+Destination : 
+-------------------
+
+Move From (S/A/D): S
+Move To (S/A/D): D
+Disk 1 moved successfully.
+
+Current State
+-------------------
+Source      : 2 3 
+Auxiliary   : 
+Destination : 1 
+-------------------
+
+Move From (S/A/D): S
+Move To (S/A/D): A
+Disk 2 moved successfully.
+
+Current State
+-------------------
+Source      : 3 
+Auxiliary   : 2 
+Destination : 1 
+-------------------
+
+Move From (S/A/D): D
+Move To (S/A/D): A
+Disk 1 moved successfully.
+
+Current State
+-------------------
+Source      : 3 
+Auxiliary   : 1 2 
+Destination : 
+-------------------
+
+Move From (S/A/D): S
+Move To (S/A/D): D
+Disk 3 moved successfully.
+
+Current State
+-------------------
+Source      : 
+Auxiliary   : 1 2 
+Destination : 3 
+-------------------
+
+Move From (S/A/D): A
+Move To (S/A/D): S
+Disk 1 moved successfully.
+
+Current State
+-------------------
+Source      : 1 
+Auxiliary   : 2 
+Destination : 3 
+-------------------
+
+Move From (S/A/D): A
+Move To (S/A/D): D
+Disk 2 moved successfully.
+
+Current State
+-------------------
+Source      : 1 
+Auxiliary   : 
+Destination : 2 3 
+-------------------
+
+Move From (S/A/D): S
+Move To (S/A/D): D
+Disk 1 moved successfully.
+
+Current State
+-------------------
+Source      : 
+Auxiliary   : 
+Destination : 1 2 3 
+-------------------
+
+Congratulations! Puzzle Solved.
+Total Moves = 7
+====================================================================
+*/
