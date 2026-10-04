@@ -1,0 +1,53 @@
+AIM:
+Implement binary search and interpolation search
+
+THEORY:
+Binary Search searches a sorted array by repeatedly dividing the search 
+range into two halves. It is faster than linear search and has a time 
+complexity of O(log n). 
+
+Interpolation Search estimates the position of the required element 
+based on its value. It works best on sorted and uniformly distributed 
+data and has an average time complexity of O(log log n)
+
+EXPECTED OUTPUT:
+Binary Search: 2
+Interpolation Search: 2
+====================================================================
+*/
+
+#include <stdio.h>
+
+int binary(int a[], int n, int x) {
+    int l = 0, r = n - 1, m;
+    while (l <= r) {
+        m = (l + r) / 2;
+        if (a[m] == x) return m;
+        if (a[m] < x) l = m + 1;
+        else r = m - 1;
+    }
+    return -1;
+}
+
+int interpolation(int a[], int n, int x) {
+    int l = 0, r = n - 1, p;
+    while (l <= r && x >= a[l] && x <= a[r]) {
+        p = l + (x - a[l]) * (r - l) / (a[r] - a[l]);
+        if (a[p] == x) return p;
+        if (a[p] < x) l = p + 1;
+        else r = p - 1;
+    }
+    return -1;
+}
+
+int main() {
+    int a[] = {10, 20, 30, 40, 50};
+    int n = 5, x = 30;
+    
+    printf("Binary Search: %d\n", binary(a, n, x));
+    printf("Interpolation Search: %d\n", interpolation(a, n, x));
+    
+    return 0;
+}
+
+```
