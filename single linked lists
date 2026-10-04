@@ -1,0 +1,175 @@
+/*
+====================================================================
+Aim: Implement Single Linked lists and its operations (creation insertion deletion traversal search reverse).
+
+Theory: A Singly Linked List is a linear data structure in which each element, called a node, contains two
+parts: data and a pointer to the next node. The last node points to NULL, indicating the end of the list.
+Unlike arrays, linked-list elements are not stored in contiguous memory locations. Nodes can be
+dynamically created and connected using pointers.
+====================================================================
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+void create() {
+    int n, x;
+    struct Node *p, *t;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+
+    while (n--) {
+        printf("Enter data: ");
+        scanf("%d", &x);
+
+        p = (struct Node *)malloc(sizeof(struct Node));
+        p->data = x;
+        p->next = NULL;
+
+        if (head == NULL) {
+            head = p;
+        } else {
+            t = head;
+            while (t->next)
+                t = t->next;
+            t->next = p;
+        }
+    }
+}
+
+void insert() {
+    int x;
+    struct Node *p;
+
+    printf("Enter data: ");
+    scanf("%d", &x);
+
+    p = (struct Node *)malloc(sizeof(struct Node));
+    p->data = x;
+    p->next = head;
+    head = p;
+}
+
+void delete() {
+    struct Node *p;
+    if (!head) {
+        printf("List is empty\n");
+        return;
+    }
+
+    p = head;
+    head = head->next;
+    free(p);
+}
+
+void traverse() {
+    struct Node *p = head;
+    while (p) {
+        printf("%d -> ", p->data);
+        p = p->next;
+    }
+    printf("NULL\n");
+}
+
+void search() {
+    int x, pos = 1;
+    struct Node *p = head;
+
+    printf("Enter element: ");
+    scanf("%d", &x);
+
+    while (p) {
+        if (p->data == x) {
+            printf("Found at position %d\n", pos);
+            return;
+        }
+        p = p->next;
+        pos++;
+    }
+    printf("Not found\n");
+}
+
+void reverse() {
+    struct Node *p = head, *q = NULL, *r;
+    while (p) {
+        r = p->next;
+        p->next = q;
+        q = p;
+        p = r;
+    }
+    head = q;
+}
+
+int main() {
+    int ch;
+    do {
+        printf("\n1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1: create(); break;
+            case 2: insert(); break;
+            case 3: delete(); break;
+            case 4: traverse(); break;
+            case 5: search(); break;
+            case 6: reverse(); break;
+        }
+    } while (ch != 7);
+
+    return 0;
+}
+
+/*
+====================================================================
+Output:
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 1
+Enter number of nodes: 2
+Enter data: 23
+Enter data: 23
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 2
+Enter data: 21
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 3
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 4
+23 -> 23 -> NULL
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 5
+Enter element: 23
+Found at position 1
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 4
+23 -> 23 -> NULL
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 5
+Enter element: 23
+Found at position 1
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 6
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 4
+23 -> 23 -> NULL
+
+1.Create 2.Insert 3.Delete 4.Traverse 5.Search 6.Reverse 7.Exit
+Enter choice: 7
+====================================================================
+*/
