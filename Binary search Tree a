@@ -1,0 +1,101 @@
+/*
+================================================================================
+Practical-10
+
+Aim: Implement Binary search Tree and its operations (creation, insertion, deletion).
+
+Theory: A Binary Search Tree is a binary tree where each node has at most two children.
+The left child contains smaller values and the right child contains larger values than the parent node.
+The main operations are creation, insertion, and deletion of nodes.
+BST makes searching, insertion, and deletion efficient when the tree is balanced.
+================================================================================
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+struct Node* insert(struct Node *root, int x) {
+    if (root == NULL) {
+        root = malloc(sizeof(struct Node));
+        root->data = x;
+        root->left = root->right = NULL;
+    }
+    else if (x < root->data)
+        root->left = insert(root->left, x);
+    else
+        root->right = insert(root->right, x);
+
+    return root;
+}
+
+struct Node* delete(struct Node *root, int x) {
+    if (root == NULL) return root;
+
+    if (x < root->data)
+        root->left = delete(root->left, x);
+    else if (x > root->data)
+        root->right = delete(root->right, x);
+    else {
+        if (root->left == NULL) {
+            struct Node *t = root->right;
+            free(root);
+            return t;
+        }
+        if (root->right == NULL) {
+            struct Node *t = root->left;
+            free(root);
+            return t;
+        }
+
+        struct Node *t = root->right;
+        while (t->left) t = t->left;
+
+        root->data = t->data;
+        root->right = delete(root->right, t->data);
+    }
+    return root;
+}
+
+void inorder(struct Node *root) {
+    if (root) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+int main() {
+    struct Node *root = NULL;
+
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 70);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 60);
+    insert(root, 80);
+
+    printf("BST: ");
+    inorder(root);
+
+    root = delete(root, 30);
+
+    printf("\nAfter deletion: ");
+    inorder(root);
+
+    return 0;
+}
+
+/*
+================================================================================
+Output:
+
+BST: 20 30 40 50 60 70 80 
+After deletion: 20 40 50 60 70 80 
+================================================================================
+*/
