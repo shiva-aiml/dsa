@@ -1,0 +1,169 @@
+/*
+====================================================================
+Aim: Implement Stack and its operations like (creation push pop 
+     traverse peek search) using linear data structure.
+
+Theory:
+- A Stack is a linear data structure that follows the LIFO (Last In, 
+  First Out) principle, where the last element inserted is the first 
+  one to be removed. In a stack, all insertion (Push) and deletion (Pop) 
+  operations are performed only at one end called the TOP. A stack can 
+  be implemented using an array or a linked list.
+
+The basic operations of a stack include:
+- Creation: Initialize the stack with TOP = -1.
+- Push: Insert an element at the top of the stack.
+- Pop: Remove the topmost element from the stack.
+- Peek: Display the top element without removing it.
+- Traverse: Display all elements from top to bottom.
+- Search: Find a specific element in the stack.
+====================================================================
+*/
+
+#include <iostream>
+using namespace std;
+
+#define MAX 5
+
+int stack[MAX];
+int top = -1;
+
+// Push Operation
+void push(int value)
+{
+    if (top == MAX - 1)
+    {
+        cout << "Stack Overflow!" << endl;
+    }
+    else
+    {
+        stack[++top] = value;
+        cout << value << " pushed successfully." << endl;
+    }
+}
+
+// Pop Operation
+void pop()
+{
+    if (top == -1)
+    {
+        cout << "Stack Underflow!" << endl;
+    }
+    else
+    {
+        cout << stack[top] << " popped successfully." << endl;
+        top--;
+    }
+}
+
+// Peek Operation
+void peek()
+{
+    if (top == -1)
+    {
+        cout << "Stack is Empty!" << endl;
+    }
+    else
+    {
+        cout << "Top Element: " << stack[top] << endl;
+    }
+}
+
+// Traverse Operation
+void traverse()
+{
+    if (top == -1)
+    {
+        cout << "Stack is Empty!" << endl;
+    }
+    else
+    {
+        cout << "Stack Elements: ";
+        for (int i = top; i >= 0; i--)
+        {
+            cout << stack[i] << " ";
+        }
+        cout << endl;
+    }
+}
+
+// Search Operation
+void search(int value)
+{
+    for (int i = top; i >= 0; i--)
+    {
+        if (stack[i] == value)
+        {
+            cout << value << " found in stack." << endl;
+            return;
+        }
+    }
+    cout << value << " not found in stack." << endl;
+}
+
+int main()
+{
+    int choice, value;
+    do
+    {
+        cout << "\n--- STACK MENU ---" << endl;
+        cout << "1. Push" << endl;
+        cout << "2. Pop" << endl;
+        cout << "3. Peek" << endl;
+        cout << "4. Traverse" << endl;
+        cout << "5. Search" << endl;
+        cout << "6. Exit" << endl;
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            cout << "Enter Value: ";
+            cin >> value;
+            push(value);
+            break;
+
+        case 2:
+            pop();
+            break;
+
+        case 3:
+            peek();
+            break;
+
+        case 4:
+            traverse();
+            break;
+
+        case 5:
+            cout << "Enter Value to Search: ";
+            cin >> value;
+            search(value);
+            break;
+
+        case 6:
+            cout << "Program Ended." << endl;
+            break;
+
+        default:
+            cout << "Invalid Choice!" << endl;
+        }
+    } while (choice != 6);
+
+    return 0;
+}
+
+/*
+====================================================================
+Output:
+--- STACK MENU ---
+1. Push
+2. Pop
+3. Peek
+4. Traverse
+5. Search
+6. Exit
+Enter Choice: 
+====================================================================
+*/
