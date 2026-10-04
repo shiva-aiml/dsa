@@ -1,0 +1,91 @@
+```cpp
+/*
+====================================================================
+AIM:
+Implement Postfix evaluation using Stack.
+
+Theory:
+A postfix expression (also known as Reverse Polish Notation) places 
+operators after their operands (for instance, AB+ instead of A+B). 
+Because operator precedence and associativity are implicitly determined 
+by the position of the tokens, postfix expressions do not require parentheses.
+
+Evaluation process using a stack:
+1. Scan the postfix string from left to right.
+2. If the current character is an operand (a digit), push it onto the stack.
+3. If an operator is encountered, pop the top two elements:
+   - The first popped element acts as operand 'b'.
+   - The second popped element acts as operand 'a'.
+4. Perform the operation (e.g., a + b, a - b, a * b, a / b, pow(a, b)).
+5. Push the evaluated result back onto the stack.
+6. The final value left in the stack is the expression result.
+
+Example:
+Postfix: 23+5*
+Evaluation: (2 + 3) * 5 = 25
+Result: 25
+====================================================================
+*/
+
+#include <iostream>
+#include <stack>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+    string postfix;
+    stack<int> st;
+
+    cout << "Enter Postfix Expression: ";
+    cin >> postfix;
+
+    for (char ch : postfix)
+    {
+        if (isdigit(ch))
+        {
+            // Convert character digit to integer value
+            st.push(ch - '0');
+        }
+        else
+        {
+            int b = st.top();
+            st.pop();
+            int a = st.top();
+            st.pop();
+
+            switch (ch)
+            {
+            case '+':
+                st.push(a + b);
+                break;
+            case '-':
+                st.push(a - b);
+                break;
+            case '*':
+                st.push(a * b);
+                break;
+            case '/':
+                st.push(a / b);
+                break;
+            case '^':
+                st.push(pow(a, b));
+                break;
+            }
+        }
+    }
+
+    cout << "Result = " << st.top();
+
+    return 0;
+}
+
+/*
+====================================================================
+Output:
+
+Enter Postfix Expression: 23+3-
+Result = 2
+====================================================================
+*/
