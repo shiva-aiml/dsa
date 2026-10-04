@@ -1,0 +1,153 @@
+/*
+================================================================================
+Practical-11
+
+Aim: Implement Traversals Pre-order In-order Post-order on BST
+
+Theory: Tree traversal is the process of visiting every node of a tree in a specific order.
+Preorder: Root -> Left -> Right.
+In-order: Left -> Root -> Right; in a BST, it gives elements in sorted order.
+Post-order: Left -> Right -> Root.
+================================================================================
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+struct Node* insert(struct Node *root, int x) {
+    if (root == NULL) {
+        root = malloc(sizeof(struct Node));
+        root->data = x;
+        root->left = root->right = NULL;
+    }
+    else if (x < root->data)
+        root->left = insert(root->left, x);
+    else
+        root->right = insert(root->right, x);
+
+    return root;
+}
+
+void preorder(struct Node *r) {
+    if (r) {
+        printf("%d ", r->data);
+        preorder(r->left);
+        preorder(r->right);
+    }
+}
+
+void inorder(struct Node *r) {
+    if (r) {
+        inorder(r->left);
+        printf("%d ", r->data);
+        inorder(r->right);
+    }
+}
+
+void postorder(struct Node *r```c
+/*
+================================================================================
+Practical-11
+
+AIM:
+Implement Pre-order, In-order, and Post-order Traversals on a Binary Search Tree (BST).
+
+THEORY:
+Tree traversal is a methodical procedure for visiting and processing every node 
+within a tree structure.
+- Pre-order Traversal: Processes the root first, follows through the left subtree, 
+  and concludes with the right subtree (Root -> Left -> Right).
+- In-order Traversal: Visits the left subtree, processes the root node, and then 
+  the right subtree (Left -> Root -> Right). When evaluated on a BST, this traversal 
+  produces values in non-decreasing sorted order.
+- Post-order Traversal: Traverses the left subtree, followed by the right subtree, 
+  and processes the root node last (Left -> Right -> Root).
+================================================================================
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+// Function to insert a node into the BST
+struct Node* insert(struct Node *root, int x) {
+    if (root == NULL) {
+        root = malloc(sizeof(struct Node));
+        root->data = x;
+        root->left = root->right = NULL;
+    }
+    else if (x < root->data)
+        root->left = insert(root->left, x);
+    else
+        root->right = insert(root->right, x);
+
+    return root;
+}
+
+// Pre-order Traversal: Root -> Left -> Right
+void preorder(struct Node *r) {
+    if (r) {
+        printf("%d ", r->data);
+        preorder(r->left);
+        preorder(r->right);
+    }
+}
+
+// In-order Traversal: Left -> Root -> Right
+void inorder(struct Node *r) {
+    if (r) {
+        inorder(r->left);
+        printf("%d ", r->data);
+        inorder(r->right);
+    }
+}
+
+// Post-order Traversal: Left -> Right -> Root
+void postorder(struct Node *r) {
+    if (r) {
+        postorder(r->left);
+        postorder(r->right);
+        printf("%d ", r->data);
+    }
+}
+
+int main() {
+    struct Node *root = NULL;
+
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 70);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 60);
+    insert(root, 80);
+
+    printf("Preorder: ");
+    preorder(root);
+
+    printf("\nInorder: ");
+    inorder(root);
+
+    printf("\nPostorder: ");
+    postorder(root);
+
+    return 0;
+}
+
+/*
+================================================================================
+OUTPUT:
+Preorder: 50 30 20 40 70 60 80
+Inorder: 20 30 40 50 60 70 80
+Postorder: 20 40 30 60 80 70 50
+================================================================================
+*/
