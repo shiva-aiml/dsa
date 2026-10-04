@@ -1,0 +1,138 @@
+
+/*
+====================================================================
+FACULTY OF ENGINEERING & TECHNOLOGY
+DATA STRUCTURE AND ALGORITHMS (SUBJECT CODE: 03010503PC02)
+BTECH 2ND YEAR 3RD SEMESTER
+====================================================================
+
+AIM:
+Implement Double Linked lists and its operations 
+(creation, insertion, deletion, traversal, search, reverse).
+THEORY:
+A Doubly Linked List is a linked data structure where each node 
+contains data, a pointer to the previous node, and a pointer to the 
+next node. It allows traversal in both forward and backward directions. 
+The main operations are creation, insertion, deletion, traversal, 
+searching, and reversing. It requires extra memory for the prev 
+pointer but makes insertion and deletion easier.
+
+EXPECTED OUTPUT:
+List: 10 20 30
+Search 20: Found
+After Insert: 5 10 20 30
+After Delete: 10 20 30
+After Reverse: 20 10
+====================================================================
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *prev, *next;
+};
+
+struct Node *head = NULL;
+
+void create(int x) {
+    struct Node *p = malloc(sizeof(struct Node)), *t = head;
+    p->data = x; 
+    p->next = NULL; 
+    p->prev = NULL;
+
+    if (!head) {
+        head = p;
+    } else {
+        while (t->next) {
+            t = t->next;
+        }
+        t->next = p;
+        p->prev = t;
+    }
+}
+
+void insert(int x) {
+    struct Node *p = malloc(sizeof(struct Node));
+    p->data = x; 
+    p->prev = NULL; 
+    p->next = head;
+    
+    if (head) {
+        head->prev = p;
+    }
+    head = p;
+}
+
+void delete() {
+    struct Node *p = head;
+    if (!head) return;
+    
+    head = head->next;
+    if (head) {
+        head->prev = NULL;
+    }
+    free(p);
+}
+
+void traverse() {
+    struct Node *p = head;
+    while (p) {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+}
+
+void search(int x) {
+    struct Node *p = head;
+    while (p) {
+        if (p->data == x) {
+            printf("Found\n");
+            return;
+        }
+        p = p->next;
+    }
+    printf("Not Found\n");
+}
+
+void reverse() {
+    struct Node *p = head, *t;
+    while (p) {
+        t = p->prev;
+        p->prev = p->next;
+        p->next = t;
+        p = p->prev;
+    }
+    if (head) {
+        head = head->prev;
+    }
+}
+
+int main() {
+    create(10);
+    create(20);
+    create(30);
+    
+    printf("List: ");
+    traverse();
+    
+    printf("\nSearch 20: ");
+    search(20);
+    
+    insert(5);
+    printf("After Insert: ");
+    traverse();
+    
+    delete();
+    printf("\nAfter Delete: ");
+    traverse();
+    
+    reverse();
+    printf("\nAfter Reverse: ");
+    traverse();
+    
+    return 0;
+}
+
+```
